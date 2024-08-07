@@ -1,11 +1,14 @@
-import { createClient } from "redis";
+import { PrismaClient } from '@prisma/client';
 
-const client = createClient();
-
-client.on("error", (err) => console.log(err))
-
-if (!client.isOpen) {
-  client.connect();
+interface CustomNodeJsGlobal {
+  prisma: PrismaClient;
 }
 
-export { client }
+declare const global: CustomNodeJsGlobal;
+
+const db = global.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV === 'development') global.prisma = db;
+
+export { db };
+

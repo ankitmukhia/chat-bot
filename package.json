@@ -9,10 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.40",
+    "@icons-pack/react-simple-icons": "^9.6.0",
+    "@prisma/client": "5.17.0",
+    "ai": "^3.3.0",
+    "jose": "^5.6.3",
+    "nanoid": "^5.0.7",
     "next": "14.2.5",
+    "next-auth": "5.0.0-beta.20",
     "react": "^18",
     "react-dom": "^18",
-    "redis": "^4.7.0"
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -21,6 +28,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
+    "prisma": "5.17.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
