@@ -2,24 +2,30 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { SiGoogle } from "@icons-pack/react-simple-icons";
+import { getMessageFromCode } from "@/lib/utils"
+import { useEffect } from "react";
+import { toast } from 'sonner'
 import Link from "next/link";
-import { signup } from "@/app/signup/actions";
+import { signup } from "@/app/(auth)/signup/actions";
 
 export default function SignupForm() {
-	const [errorMessage, dispatch] = useFormState(signup, undefined);
+	const [result, dispatch] = useFormState(signup, undefined);
 
-	return <form action={dispatch} className="flex flex-col items-center gap-4 space-y-3">
-		<div className="w-full flex-1 rounded-lg border border-gray-700/50 bg-white px-6 pb-4 pt-8 shadow-md md:w-96 dark:bg-zinc-950">
-			<h1 className="mb-3 text-2xl font-bold">Signup for an account!</h1>
+	useEffect(() => {
+		if (result) {
+			if (result.type == "error") {
+				console.log("error")
+				toast.error(getMessageFromCode(result.resultCode))
+			} else {
+				toast.success(getMessageFromCode(result.resultCode))
+			}
+		}
+	}, [result])
+
+	return <form action={dispatch}>
+		<div>
 			<div className="w-full">
 				<div>
-					<button
-						className="flex flex-row w-full justify-center gap-3 items-center rounded-md border bg-zinc-50 px-2 py-[6px] text-sm outline-none placeholder:text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
-					>
-						<SiGoogle color='#cbd5e1' size={18} />
-						<div className="text-lg font-medium text-zinc-400">Google</div>
-					</button>
 					<label className="mb-3 mt-5 block text-xs font-medium text-zinc-400">
 						Email
 					</label>
@@ -53,13 +59,12 @@ export default function SignupForm() {
 						/>
 					</div>
 				</div>
-				<div>{errorMessage && <p>{errorMessage}</p>}</div>
 				<SignupButton />
 			</div>
 		</div>
 
-		<Link href="/login"
-			className="flex flex-row gap-1 text-sm text-zinc-400"
+		<Link href="/signin"
+			className="flex flex-row gap-1 text-sm justify-center text-zinc-400"
 		>
 			No account yet? <div className="font-semibold uderline">Login</div>
 		</Link>

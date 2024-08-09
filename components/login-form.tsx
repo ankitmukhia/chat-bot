@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { login } from "@/app/signin/actions";
+import { login } from "@/app/(auth)/signin/actions";
 import { useFormState, useFormStatus } from "react-dom"
 
 export default function LoginForm() {
@@ -28,7 +28,6 @@ export default function LoginForm() {
 					</div>
 				</div>
 
-
 				<div>
 					<label className="mb-3 mt-5 block text-xs font-medium text-zinc-400">
 						Password
@@ -45,7 +44,6 @@ export default function LoginForm() {
 						/>
 					</div>
 				</div>
-				<div>{errorMessage && <p>{errorMessage}</p>}</div>
 				<LoginButton />
 			</div>
 
