@@ -4,7 +4,7 @@ import { signIn } from "@/auth"
 import { EmailPasswordValidationSchema } from "@/lib/types";
 import { getUser } from "@/app/(auth)/signin/actions"
 import { db } from "@/lib/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { ResultCode } from "@/lib/utils";
 import AuthError from "next-auth";
 
@@ -25,7 +25,7 @@ export async function createUser(
 			resultCode: ResultCode.UserAlreadyExists
 		}
 	} else {
-		const res = await db.user.create({
+		await db.user.create({
 			data: {
 				email,
 				password: hashPassword
@@ -54,7 +54,7 @@ export const signup = async (_prevState: Result | undefined, formData: FormData)
 			if (result.resultCode === ResultCode.UserCreated) {
 				await signIn("credentials", {
 					email,
-					hashPassword,
+					password,
 					redirect: false
 				});
 			}

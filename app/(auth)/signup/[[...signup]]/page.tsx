@@ -1,7 +1,14 @@
 import SignupForm from "@/components/signup-form";
 import { SocialButton } from "@/components/ui/social"
+import { redirect } from "next/navigation"
+import { auth } from "@/auth"
 
 export default async function Signup() {
+  const session = await auth()
+
+  if (session) {
+    redirect('/')
+  }
 
   return <div className="flex flex-col p-4">
     <div className="flex flex-col items-center gap-4 space-y-3">

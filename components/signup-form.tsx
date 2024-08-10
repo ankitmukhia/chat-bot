@@ -3,12 +3,14 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import { getMessageFromCode } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 import { useEffect } from "react";
 import { toast } from 'sonner'
 import Link from "next/link";
 import { signup } from "@/app/(auth)/signup/actions";
 
 export default function SignupForm() {
+	const router = useRouter()
 	const [result, dispatch] = useFormState(signup, undefined);
 
 	useEffect(() => {
@@ -18,9 +20,10 @@ export default function SignupForm() {
 				toast.error(getMessageFromCode(result.resultCode))
 			} else {
 				toast.success(getMessageFromCode(result.resultCode))
+				router.refresh()
 			}
 		}
-	}, [result])
+	}, [result, router])
 
 	return <form action={dispatch}>
 		<div>

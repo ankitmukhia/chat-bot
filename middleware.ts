@@ -1,11 +1,8 @@
 import authConfig from "./auth.config"
 import NextAuth from "next-auth";
 
-const { auth } = NextAuth(authConfig)
-
-export default auth((req) => {
-  console.log("REACT : ", req.nextUrl.pathname)
-})
+/* in this approch we are redirecting user with the emediate refresh */
+export default NextAuth(authConfig).auth;
 
 /* middleware will be invoked for every route in yout project expect below mather, which are static, webp, etc */
 export const config = {

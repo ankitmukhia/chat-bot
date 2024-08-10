@@ -31,3 +31,10 @@ export const getMessageFromCode = (resultCode: string) => {
       return 'Logged in!'
   }
 }
+
+/**
+ * An array of routes that are accessiable to public
+ */
+export const publicRoutes = [
+  "/"
+]
