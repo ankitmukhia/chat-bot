@@ -16,7 +16,6 @@ export default function SignupForm() {
 	useEffect(() => {
 		if (result) {
 			if (result.type == "error") {
-				console.log("error")
 				toast.error(getMessageFromCode(result.resultCode))
 			} else {
 				toast.success(getMessageFromCode(result.resultCode))

@@ -1,11 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { login } from "@/app/(auth)/signin/actions";
+import { getMessageFromCode } from "@/lib/utils"
 import { useFormState, useFormStatus } from "react-dom"
+import { toast } from 'sonner'
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-	const [errorMessage, dispatch] = useFormState(login, undefined);
+	const router = useRouter()
+	const [result, dispatch] = useFormState(login, undefined)
+
+	useEffect(() => {
+		if (result) {
+			if (result.type === 'error') {
+				toast.error(getMessageFromCode(result.resultCode))
+			} else {
+				toast.success(getMessageFromCode(result.resultCode))
+				router.refresh()
+			}
+		}
+	}, [result, router])
 
 	return <form action={dispatch} className="flex flex-col items-center gap-4 space-y-3">
 		<div className="w-full flex-1 rounded-lg border border-gray-700/50 bg-white px-6 pb-4 pt-8 shadow-md md:w-96 dark:bg-zinc-950">

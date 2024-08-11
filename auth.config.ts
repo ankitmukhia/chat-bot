@@ -2,8 +2,7 @@ import type { NextAuthConfig } from "next-auth";
 import z from "zod";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials"
-import { EmailPasswordValidationSchema } from "@/lib/types"
-import { getUser } from "@/app/(auth)/signin/actions"
+import { getUser } from "@/lib/utils"
 
 export default {
   providers: [
@@ -18,24 +17,19 @@ export default {
         if (validateCredentials.success) {
           const { email, password } = validateCredentials.data;
 
-          const User = await getUser(email)
+          const user = await getUser(email)
 
-          if (!User) null;
+          if (!user) return null
 
-          const passwordMatch = await bcrypt.compare(password, User.password)
-          console.log("Matched Password : ", passwordMatch)
+          const passwordMatch = await bcrypt.compare(password, user.password)
 
-          if (passwordMatch) return User;
+          if (passwordMatch) return user;
         }
 
         return null
       }
     })
-  ],
-  pages: {
-    "signIn": "/signin",
-    "newUser": "/signup"
-  },
+  ]
 } satisfies NextAuthConfig
 
 /* to mantain session, if we use ORM's like prisma, which is not fully compatable with edge, can be problematic, coz it needs db access. So that why we use JWT's that stores session information on client side. The data is embeded in the token itself, there is not need of db access */

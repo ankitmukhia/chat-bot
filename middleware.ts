@@ -1,4 +1,4 @@
-import authConfig from "./auth.config"
+import authConfig from "@/auth.config"
 import NextAuth from "next-auth";
 
 /* in this approch we are redirecting user with the emediate refresh */

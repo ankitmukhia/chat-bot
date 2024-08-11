@@ -2,11 +2,11 @@
 
 import { signIn } from "@/auth"
 import { EmailPasswordValidationSchema } from "@/lib/types";
-import { getUser } from "@/app/(auth)/signin/actions"
+import { getUser } from "@/lib/utils"
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { ResultCode } from "@/lib/utils";
-import AuthError from "next-auth";
+import { AuthError } from "next-auth";
 
 interface Result {
 	type: string;
@@ -41,7 +41,7 @@ export async function createUser(
 export const signup = async (_prevState: Result | undefined, formData: FormData): Promise<any> => {
 	const email = formData.get("email") as string
 	const password = formData.get("password") as string
-	// zod validation
+
 	const { success } = EmailPasswordValidationSchema.safeParse({ email, password })
 
 	if (success) {

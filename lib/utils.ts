@@ -1,10 +1,20 @@
 /* A tiny, secure, URL-friendly, unique string ID generator for JavaScript. */
 import { customAlphabet } from "nanoid";
+import { db } from "@/lib/db"
 
 export const nanoid = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
   7
 ) // 7-character random string
+
+export const getUser = async (email: string) => {
+  const user = await db.user.findUnique({
+    where: {
+      email
+    }
+  });
+  return user;
+}
 
 export enum ResultCode {
   InvalidCredentials = 'INVALID_CREDENTIALS',
@@ -38,3 +48,5 @@ export const getMessageFromCode = (resultCode: string) => {
 export const publicRoutes = [
   "/"
 ]
+
+
