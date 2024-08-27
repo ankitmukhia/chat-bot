@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-
 export default async function Page() {
   const session = await auth();
 
@@ -8,6 +7,6 @@ export default async function Page() {
   }
 
   return <div>
-    {JSON.stringify(session)}
+
   </div>
 }

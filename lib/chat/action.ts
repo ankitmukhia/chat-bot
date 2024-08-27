@@ -3,7 +3,7 @@ import 'server-only';
 
 import { nanoid } from "../utils"
 import { Chat } from "../types";
-import { getSession } from "@/auth"
+import { auth } from "@/auth"
 import {
 	createAI,
 	createStreamableUI,
@@ -23,9 +23,9 @@ export const AI = createAI({
 	initialAIState: { chatId: nanoid(), messages: [] },
 	onGetUIState: async () => {
 		'use server';
-		const session = await getSession();
+		const session = await auth();
 
-		if (session) {
+		if (session && session.user) {
 			const aiState = getAIState() as Chat;
 
 			if (aiState) {
@@ -38,15 +38,32 @@ export const AI = createAI({
 	},
 	onSetAiState: async ({ state }) => {
 		"use server"
+		const session = await auth();
 
-		const session = await getSession();
-
-		if (session) {
+		if (session && session.user) {
 			const { chatId, message } = state;
 
 			const createdAt = new Date();
 
-			const userId = session
+			const userId = session.user.id as string;
+
+			const path = `/chat/${chatId}`;
+
+			const firstMessageContent = message[0].content as string;
+
+			const title = firstMessageContent.subString(0, 100);
+
+			const chat: Chat = {
+				id: chatId,
+				title,
+				userId,
+				createdAt,
+				message,
+				path
+			}
+			await saveChat(chat)
+		} else {
+			return;
 		}
 	}
 });
